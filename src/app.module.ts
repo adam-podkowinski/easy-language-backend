@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -15,11 +16,14 @@ import * as Joi from '@hapi/joi';
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
         TYPEORM_SYNC: Joi.bool().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRATION_TIME: Joi.string().required(),
         PORT: Joi.number(),
       }),
     }),
     DatabaseModule,
     UserModule,
+    AuthenticationModule,
   ],
 })
 export class AppModule {}
