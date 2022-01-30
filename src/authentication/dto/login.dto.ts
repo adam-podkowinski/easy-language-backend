@@ -1,4 +1,5 @@
 import {
+  IsEmail,
   IsNotEmpty,
   IsString,
   Matches,
@@ -9,8 +10,7 @@ import {
 export class LoginDto {
   @IsNotEmpty()
   @IsString()
-  @MinLength(4)
-  @MaxLength(20)
+  @IsEmail()
   email: string;
 
   @IsNotEmpty()

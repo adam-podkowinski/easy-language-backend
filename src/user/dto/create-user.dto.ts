@@ -1,6 +1,6 @@
 import { ThemeMode } from '../enums/theme-mode.enum';
 
-export class CreateUserDto {
+export interface CreateUserDto {
   email: string;
   password: string;
   salt: string;

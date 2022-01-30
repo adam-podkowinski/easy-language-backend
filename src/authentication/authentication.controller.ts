@@ -1,22 +1,22 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
-import { User } from '../user/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { AuthenticationReturnDto } from './dto/authentication-return.dto';
 
 @Controller('authentication')
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
   @Post('register')
-  public async register(
+  async register(
     @Body() registerData: RegisterDto,
-  ): Promise<{ token: string; user: User }> {
+  ): Promise<AuthenticationReturnDto> {
     return this.authenticationService.register(registerData);
   }
 
   @Post('login')
-  public async login(@Body() loginData: LoginDto) {
+  async login(@Body() loginData: LoginDto): Promise<AuthenticationReturnDto> {
     return this.authenticationService.login(loginData);
   }
 }
