@@ -1,5 +1,5 @@
 GET http://localhost:{{port}}/user
 Accept: application/json
-Authorization: Bearer {{user2_token}}
+Authorization: Bearer {{user1_token}}
 
 ###

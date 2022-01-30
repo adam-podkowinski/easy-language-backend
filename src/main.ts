@@ -5,11 +5,19 @@ import {
   Logger,
   ValidationPipe,
 } from '@nestjs/common';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 
 async function bootstrap() {
   const port = process.env.PORT;
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+  );
+
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
