@@ -4,12 +4,14 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Exclude } from 'class-transformer';
 
 @Entity()
+@Unique(['userId', 'language'])
 export class Dictionary extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

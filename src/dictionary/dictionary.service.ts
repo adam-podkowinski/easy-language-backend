@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateDictionaryDto } from './dto/create-dictionary.dto';
 import { UpdateDictionaryDto } from './dto/update-dictionary.dto';
 import { Dictionary } from './dictionary.entity';
 import { User } from '../user/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PostgresErrorCode } from '../database/error-codes.enum';
 
 @Injectable()
 export class DictionaryService {
@@ -22,7 +27,16 @@ export class DictionaryService {
     dict.language = language;
     dict.user = user;
     user.currentDictionary = dict;
-    await dict.save();
+
+    await dict.save().catch((e) => {
+      if (e?.code === PostgresErrorCode.UniqueViolation) {
+        throw new ConflictException(
+          'Dictionary with that language already exists.',
+        );
+      }
+      throw e;
+    });
+
     await user.save();
     return dict;
   }

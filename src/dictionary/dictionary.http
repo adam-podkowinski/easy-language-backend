@@ -1,5 +1,5 @@
 ###
-GET http://localhost:{{port}}/dictionary/siema
+GET http://localhost:{{port}}/dictionary/27
 Accept: application/json
 Authorization: Bearer {{user2_token}}
 
@@ -8,15 +8,15 @@ Authorization: Bearer {{user2_token}}
 ###
 POST http://localhost:{{port}}/dictionary
 Content-Type: application/json
-Authorization: Bearer {{user1_token}}
+Authorization: Bearer {{user2_token}}
 
 {
-  "language": "pl"
+  "language": "sssss"
 }
 
 ###
 GET http://localhost:{{port}}/dictionary
 Accept: application/json
-Authorization: Bearer {{user1_token}}
+Authorization: Bearer {{user2_token}}
 
 ###
