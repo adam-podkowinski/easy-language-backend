@@ -35,7 +35,7 @@ export class AuthenticationService {
       };
 
       const user = await this.userService.create(createUserData);
-      const token = await this.jwtService.sign({ email: user.email });
+      const token = await this.jwtService.sign({ id: user.id });
 
       return { token, user };
     } catch (e) {
@@ -56,7 +56,7 @@ export class AuthenticationService {
       throw new UnauthorizedException('Invalid credentials.');
     }
 
-    const token = await this.jwtService.sign({ email: user.email });
+    const token = await this.jwtService.sign({ id: user.id });
 
     return { token, user };
   }

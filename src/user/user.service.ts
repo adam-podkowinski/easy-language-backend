@@ -17,6 +17,13 @@ export class UserService {
     return user;
   }
 
+  async getById(id: number): Promise<User> {
+    const user = await this.userRepository.findOne(id);
+    if (!user)
+      throw new NotFoundException(`User with ID: ${id} does not exist`);
+    return user;
+  }
+
   async create(userData: CreateUserDto): Promise<User> {
     const newUser = await this.userRepository.create(userData);
     await this.userRepository.save(newUser);
