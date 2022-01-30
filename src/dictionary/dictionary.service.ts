@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDictionaryDto } from './dto/create-dictionary.dto';
 import { UpdateDictionaryDto } from './dto/update-dictionary.dto';
 import { Dictionary } from './dictionary.entity';
@@ -31,8 +31,16 @@ export class DictionaryService {
     return this.dictionaryRepository.find({ where: { userId: user.id } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} dictionary`;
+  async findOne(id: number, user: User): Promise<Dictionary> {
+    const dict = await this.dictionaryRepository.findOne({
+      where: { userId: user.id, id },
+    });
+
+    if (!dict) {
+      throw new NotFoundException(`User with ID: ${id} not found`);
+    }
+
+    return dict;
   }
 
   update(id: number, updateDictionaryDto: UpdateDictionaryDto) {

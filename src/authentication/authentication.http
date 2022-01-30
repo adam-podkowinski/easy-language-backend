@@ -2,7 +2,7 @@ POST http://localhost:3000/authentication/register
 Content-Type: application/json
 
 {
-  "email": "test@gmail.com",
+  "email": "{{user2}}",
   "password": "{{password}}",
   "themeMode": "Dark"
 }

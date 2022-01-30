@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { DictionaryService } from './dictionary.service';
 import { CreateDictionaryDto } from './dto/create-dictionary.dto';
@@ -30,18 +31,21 @@ export class DictionaryController {
   }
 
   @Get()
-  findAll(@GetUser() user: User) {
+  findAll(@GetUser() user: User): Promise<Dictionary[]> {
     return this.dictionaryService.findAll(user);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.dictionaryService.findOne(+id);
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ): Promise<Dictionary> {
+    return this.dictionaryService.findOne(id, user);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateDictionaryDto: UpdateDictionaryDto,
   ) {
     return this.dictionaryService.update(+id, updateDictionaryDto);
