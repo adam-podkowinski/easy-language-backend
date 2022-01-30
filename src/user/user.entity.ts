@@ -2,12 +2,15 @@ import {
   BaseEntity,
   Column,
   Entity,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ThemeMode } from './enums/theme-mode.enum';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
+import { Dictionary } from '../dictionary/dictionary.entity';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 @Entity()
 export class User extends BaseEntity {
@@ -15,24 +18,36 @@ export class User extends BaseEntity {
   id: number;
 
   @Column({ unique: true })
+  @IsNotEmpty()
   email: string;
 
   @Column()
+  @IsNotEmpty()
   @Exclude()
   private password: string;
 
   @Column()
+  @IsNotEmpty()
   @Exclude()
   private salt: string;
 
   @Column({ default: ThemeMode.System })
+  @IsNotEmpty()
   themeMode: ThemeMode = ThemeMode.System;
 
   @Column({ default: 'en' })
+  @IsNotEmpty()
   nativeLanguage: string = 'en';
 
-  @Column({ default: 0 })
-  currentDictionaryId: number = 0;
+  @OneToOne(() => Dictionary, (dict) => dict.user, {
+    nullable: true,
+    eager: true,
+  })
+  currentDictionary?: Dictionary;
+
+  @Column({ nullable: true })
+  @IsOptional()
+  currentDictionaryId?: number;
 
   @UpdateDateColumn()
   updatedAt: Date;
