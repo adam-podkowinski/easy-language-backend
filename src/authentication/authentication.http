@@ -2,8 +2,17 @@ POST http://localhost:3000/authentication/register
 Content-Type: application/json
 
 {
-  "email": "adam@gmail.com",
-  "password": "hello"
+  "email": "{{user2}}a",
+  "password": "{{password}}"
+}
+
+###
+POST http://localhost:3000/authentication/login
+Content-Type: application/json
+
+{
+  "email": "{{user1}}",
+  "passwordd": "{{password}}"
 }
 
 ###

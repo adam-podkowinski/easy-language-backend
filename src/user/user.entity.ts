@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { ThemeMode } from './enums/theme-mode.enum';
 import * as bcrypt from 'bcrypt';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User extends BaseEntity {
@@ -17,9 +18,11 @@ export class User extends BaseEntity {
   email: string;
 
   @Column()
+  @Exclude()
   private password: string;
 
   @Column()
+  @Exclude()
   private salt: string;
 
   @Column({ default: ThemeMode.System })

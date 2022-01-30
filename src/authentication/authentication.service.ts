@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { User } from '../user/user.entity';
@@ -6,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { PostgresErrorCode } from '../database/error-codes.enum';
 
 @Injectable()
 export class AuthenticationService {
@@ -20,17 +26,23 @@ export class AuthenticationService {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(registerDto.password, salt);
 
-    const createUserData: CreateUserDto = {
-      ...registerDto,
-      password: hashedPassword,
-      salt,
-    };
+    try {
+      const createUserData: CreateUserDto = {
+        ...registerDto,
+        password: hashedPassword,
+        salt,
+      };
 
-    const user = await this.userService.create(createUserData);
+      const user = await this.userService.create(createUserData);
+      const token = await this.jwtService.sign({ email: user.email });
 
-    const token = await this.jwtService.sign({ email: user.email });
-
-    return { token, user };
+      return { token, user };
+    } catch (e) {
+      if (e?.code === PostgresErrorCode.UniqueViolation) {
+        throw new ConflictException('User with that e-mail already exists.');
+      }
+      throw new InternalServerErrorException('Something went wrong.');
+    }
   }
 
   public async login(

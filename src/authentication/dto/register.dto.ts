@@ -13,8 +13,6 @@ import {
 export class RegisterDto {
   @IsNotEmpty()
   @IsString()
-  @MinLength(4)
-  @MaxLength(20)
   @IsEmail()
   email: string;
 
@@ -23,7 +21,7 @@ export class RegisterDto {
   @MinLength(8)
   @MaxLength(64)
   @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'Password too weak.',
+    message: 'password too weak',
   })
   password: string;
 
