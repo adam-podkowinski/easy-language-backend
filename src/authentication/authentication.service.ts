@@ -12,6 +12,7 @@ import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { PostgresErrorCode } from '../database/error-codes.enum';
+import { AuthenticationReturnDto } from './dto/authentication-return.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -22,7 +23,7 @@ export class AuthenticationService {
 
   public async register(
     registerDto: RegisterDto,
-  ): Promise<{ token: string; user: User }> {
+  ): Promise<AuthenticationReturnDto> {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(registerDto.password, salt);
 
@@ -47,7 +48,7 @@ export class AuthenticationService {
 
   public async login(
     authCredentialsDto: LoginDto,
-  ): Promise<{ token: string; user: User }> {
+  ): Promise<AuthenticationReturnDto> {
     const user: User = await this.userService.getByEmail(
       authCredentialsDto.email,
     );

@@ -18,35 +18,28 @@ export class User extends BaseEntity {
   id: number;
 
   @Column({ unique: true })
-  @IsNotEmpty()
   email: string;
 
   @Column()
-  @IsNotEmpty()
   @Exclude()
   private password: string;
 
   @Column()
-  @IsNotEmpty()
   @Exclude()
   private salt: string;
 
   @Column({ default: ThemeMode.System })
-  @IsNotEmpty()
   themeMode: ThemeMode = ThemeMode.System;
 
   @Column({ default: 'en' })
-  @IsNotEmpty()
   nativeLanguage: string = 'en';
 
   @OneToOne(() => Dictionary, (dict) => dict.user, {
     nullable: true,
-    eager: true,
   })
   currentDictionary?: Dictionary;
 
   @Column({ nullable: true })
-  @IsOptional()
   currentDictionaryId?: number;
 
   @UpdateDateColumn()

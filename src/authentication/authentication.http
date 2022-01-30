@@ -12,7 +12,7 @@ POST http://localhost:3000/authentication/login
 Content-Type: application/json
 
 {
-  "email": "{{user2}}",
+  "email": "test@gmail.com",
   "password": "{{password}}"
 }
 

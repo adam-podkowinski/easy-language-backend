@@ -12,11 +12,9 @@ export class UserService {
 
   async getByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOne({ email });
-    if (user) {
-      return user;
-    }
-
-    throw new NotFoundException(`User with ${email} email does not exist`);
+    if (!user)
+      throw new NotFoundException(`User with ${email} email does not exist`);
+    return user;
   }
 
   async create(userData: CreateUserDto): Promise<User> {

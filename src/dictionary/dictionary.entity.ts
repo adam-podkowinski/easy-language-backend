@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
-import { IsNotEmpty } from 'class-validator';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Dictionary extends BaseEntity {
@@ -14,16 +14,14 @@ export class Dictionary extends BaseEntity {
   id: number;
 
   @Column()
-  @IsNotEmpty()
   language: string;
 
   @OneToOne(() => User, (user) => user.currentDictionary, {
-    cascade: ['remove'],
     onDelete: 'CASCADE',
   })
+  @Exclude()
   user: User;
 
   @Column()
-  @IsNotEmpty()
   userId: number;
 }
