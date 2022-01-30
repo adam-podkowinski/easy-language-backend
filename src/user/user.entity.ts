@@ -2,6 +2,8 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -10,7 +12,6 @@ import { ThemeMode } from './enums/theme-mode.enum';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import { Dictionary } from '../dictionary/dictionary.entity';
-import { IsNotEmpty, IsOptional } from 'class-validator';
 
 @Entity()
 export class User extends BaseEntity {
@@ -34,13 +35,18 @@ export class User extends BaseEntity {
   @Column({ default: 'en' })
   nativeLanguage: string = 'en';
 
-  @OneToOne(() => Dictionary, (dict) => dict.user, {
+  @OneToOne(() => Dictionary, {
     nullable: true,
+    onDelete: 'SET NULL',
   })
+  @JoinColumn()
   currentDictionary?: Dictionary;
 
   @Column({ nullable: true })
   currentDictionaryId?: number;
+
+  @OneToMany(() => Dictionary, (dict) => dict.user)
+  dictionaries: Dictionary[];
 
   @UpdateDateColumn()
   updatedAt: Date;

@@ -2,8 +2,9 @@ import {
   BaseEntity,
   Column,
   Entity,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Exclude } from 'class-transformer';
@@ -16,12 +17,16 @@ export class Dictionary extends BaseEntity {
   @Column()
   language: string;
 
-  @OneToOne(() => User, (user) => user.currentDictionary, {
+  @ManyToOne(() => User, (user) => user.dictionaries, {
     onDelete: 'CASCADE',
   })
   @Exclude()
   user: User;
 
   @Column()
+  @Exclude()
   userId: number;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

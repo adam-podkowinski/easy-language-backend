@@ -21,8 +21,9 @@ export class DictionaryService {
     const dict = new Dictionary();
     dict.language = language;
     dict.user = user;
-    dict.userId = user.id;
+    user.currentDictionary = dict;
     await dict.save();
+    await user.save();
     return dict;
   }
 
