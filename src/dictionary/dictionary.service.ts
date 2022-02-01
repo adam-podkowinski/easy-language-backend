@@ -51,14 +51,28 @@ export class DictionaryService {
     });
 
     if (!dict) {
-      throw new NotFoundException(`User with ID: ${id} not found`);
+      throw new NotFoundException(`Dictionary with ID: ${id} not found`);
     }
 
     return dict;
   }
 
-  update(id: number, updateDictionaryDto: UpdateDictionaryDto) {
-    return `This action updates a #${id} dictionary`;
+  async update(
+    id: number,
+    updateDictionaryDto: UpdateDictionaryDto,
+    user: User,
+  ): Promise<Dictionary> {
+    const dict = await this.findOne(id, user);
+    dict.language = updateDictionaryDto.language;
+    await dict.save().catch((e) => {
+      if (e?.code === PostgresErrorCode.UniqueViolation) {
+        throw new ConflictException(
+          'Dictionary with that language already exists.',
+        );
+      }
+      throw e;
+    });
+    return dict;
   }
 
   remove(id: number) {

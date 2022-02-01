@@ -1,7 +1,6 @@
 import {
   ConflictException,
   Injectable,
-  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
@@ -42,7 +41,7 @@ export class AuthenticationService {
       if (e?.code === PostgresErrorCode.UniqueViolation) {
         throw new ConflictException('User with that e-mail already exists.');
       }
-      throw new InternalServerErrorException('Something went wrong.');
+      throw e;
     }
   }
 

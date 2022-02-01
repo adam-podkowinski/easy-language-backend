@@ -47,12 +47,13 @@ export class DictionaryController {
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateDictionaryDto: UpdateDictionaryDto,
-  ) {
-    return this.dictionaryService.update(+id, updateDictionaryDto);
+    @GetUser() user: User,
+  ): Promise<Dictionary> {
+    return this.dictionaryService.update(id, updateDictionaryDto, user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.dictionaryService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.dictionaryService.remove(id);
   }
 }
