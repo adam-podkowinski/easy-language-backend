@@ -1,4 +1,9 @@
 ###
+DELETE http://localhost:{{port}}/dictionary/37
+Content-Type: application/json
+Authorization: Bearer {{user1_token}}
+
+###
 PATCH http://localhost:{{port}}/dictionary/4
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
@@ -20,7 +25,7 @@ Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
 {
-  "language": "sssssa"
+  "language": "XDa"
 }
 
 ###

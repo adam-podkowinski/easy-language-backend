@@ -75,7 +75,21 @@ export class DictionaryService {
     return dict;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} dictionary`;
+  async remove(id: number, user: User): Promise<Dictionary> {
+    const dict = await this.findOne(id, user);
+    const isCurrentDictionary = dict.id === user.currentDictionaryId;
+    await dict.remove();
+
+    if (isCurrentDictionary) {
+      const newDict = await this.dictionaryRepository.findOne({
+        where: { userId: user.id },
+      });
+      if (newDict) {
+        user.currentDictionary = newDict;
+        await user.save();
+      }
+    }
+
+    return dict;
   }
 }

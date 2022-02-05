@@ -53,7 +53,7 @@ export class DictionaryController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.dictionaryService.remove(id);
+  remove(@Param('id', ParseIntPipe) id: number, @GetUser() user: User) {
+    return this.dictionaryService.remove(id, user);
   }
 }
