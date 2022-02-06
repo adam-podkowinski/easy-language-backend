@@ -9,7 +9,7 @@ import {
   UseGuards,
   ParseIntPipe,
 } from '@nestjs/common';
-import { DictionaryService } from './dictionary.service';
+import { DictionariesService } from './dictionaries.service';
 import { CreateDictionaryDto } from './dto/create-dictionary.dto';
 import { UpdateDictionaryDto } from './dto/update-dictionary.dto';
 import { User } from '../user/user.entity';
@@ -19,8 +19,8 @@ import { Dictionary } from './dictionary.entity';
 
 @Controller('dictionary')
 @UseGuards(AuthGuard('jwt'))
-export class DictionaryController {
-  constructor(private readonly dictionaryService: DictionaryService) {}
+export class DictionariesController {
+  constructor(private readonly dictionaryService: DictionariesService) {}
 
   @Post()
   create(
@@ -53,7 +53,10 @@ export class DictionaryController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number, @GetUser() user: User) {
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ): Promise<Dictionary> {
     return this.dictionaryService.remove(id, user);
   }
 }

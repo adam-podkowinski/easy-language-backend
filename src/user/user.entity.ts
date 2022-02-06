@@ -11,7 +11,8 @@ import {
 import { ThemeMode } from './enums/theme-mode.enum';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
-import { Dictionary } from '../dictionary/dictionary.entity';
+import { Dictionary } from '../dictionaries/dictionary.entity';
+import { Word } from '../words/word.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -47,6 +48,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Dictionary, (dict) => dict.user)
   dictionaries: Dictionary[];
+
+  @OneToMany(() => Word, (word) => word.user)
+  words: Word[];
 
   @UpdateDateColumn()
   updatedAt: Date;

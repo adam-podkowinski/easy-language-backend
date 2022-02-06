@@ -12,7 +12,7 @@ import { Repository } from 'typeorm';
 import { PostgresErrorCode } from '../database/error-codes.enum';
 
 @Injectable()
-export class DictionaryService {
+export class DictionariesService {
   constructor(
     @InjectRepository(Dictionary)
     private readonly dictionaryRepository: Repository<Dictionary>,
@@ -90,6 +90,6 @@ export class DictionaryService {
       }
     }
 
-    return dict;
+    return user.currentDictionary;
   }
 }
