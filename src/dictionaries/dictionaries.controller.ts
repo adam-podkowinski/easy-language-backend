@@ -20,19 +20,19 @@ import { Dictionary } from './dictionary.entity';
 @Controller('dictionary')
 @UseGuards(AuthGuard('jwt'))
 export class DictionariesController {
-  constructor(private readonly dictionaryService: DictionariesService) {}
+  constructor(private readonly dictionariesService: DictionariesService) {}
 
   @Post()
   create(
     @Body() createDictionaryDto: CreateDictionaryDto,
     @GetUser() user: User,
   ): Promise<Dictionary> {
-    return this.dictionaryService.create(createDictionaryDto, user);
+    return this.dictionariesService.create(createDictionaryDto, user);
   }
 
   @Get()
   findAll(@GetUser() user: User): Promise<Dictionary[]> {
-    return this.dictionaryService.findAll(user);
+    return this.dictionariesService.findAll(user);
   }
 
   @Get(':id')
@@ -40,7 +40,7 @@ export class DictionariesController {
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
   ): Promise<Dictionary> {
-    return this.dictionaryService.findOne(id, user);
+    return this.dictionariesService.findOne(id, user);
   }
 
   @Patch(':id')
@@ -49,7 +49,7 @@ export class DictionariesController {
     @Body() updateDictionaryDto: UpdateDictionaryDto,
     @GetUser() user: User,
   ): Promise<Dictionary> {
-    return this.dictionaryService.update(id, updateDictionaryDto, user);
+    return this.dictionariesService.update(id, updateDictionaryDto, user);
   }
 
   @Delete(':id')
@@ -57,6 +57,6 @@ export class DictionariesController {
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
   ): Promise<Dictionary> {
-    return this.dictionaryService.remove(id, user);
+    return this.dictionariesService.remove(id, user);
   }
 }
