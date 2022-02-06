@@ -1,15 +1,11 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDictionaryDto } from './dto/create-dictionary.dto';
 import { UpdateDictionaryDto } from './dto/update-dictionary.dto';
 import { Dictionary } from './dictionary.entity';
 import { User } from '../user/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PostgresErrorCode } from '../database/error-codes.enum';
+import { catchUniqueViolation } from '../database/helpers';
 
 @Injectable()
 export class DictionariesService {
@@ -28,14 +24,7 @@ export class DictionariesService {
     dict.user = user;
     user.currentDictionary = dict;
 
-    await dict.save().catch((e) => {
-      if (e?.code === PostgresErrorCode.UniqueViolation) {
-        throw new ConflictException(
-          'Dictionary with that language already exists.',
-        );
-      }
-      throw e;
-    });
+    await dict.save().catch(catchUniqueViolation);
 
     await user.save();
     return dict;
@@ -62,17 +51,19 @@ export class DictionariesService {
     updateDictionaryDto: UpdateDictionaryDto,
     user: User,
   ): Promise<Dictionary> {
-    const dict = await this.findOne(id, user);
-    dict.language = updateDictionaryDto.language;
-    await dict.save().catch((e) => {
-      if (e?.code === PostgresErrorCode.UniqueViolation) {
-        throw new ConflictException(
-          'Dictionary with that language already exists.',
-        );
-      }
-      throw e;
-    });
-    return dict;
+    const updateObj: UpdateDictionaryDto = {
+      language: updateDictionaryDto.language,
+    };
+    await this.dictionaryRepository
+      .update(
+        {
+          id,
+          user,
+        },
+        updateObj,
+      )
+      .catch(catchUniqueViolation);
+    return await this.findOne(id, user);
   }
 
   async remove(id: number, user: User): Promise<Dictionary> {

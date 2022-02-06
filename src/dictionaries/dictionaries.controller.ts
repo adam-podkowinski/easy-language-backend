@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { DictionariesService } from './dictionaries.service';
 import { CreateDictionaryDto } from './dto/create-dictionary.dto';
@@ -36,16 +35,13 @@ export class DictionariesController {
   }
 
   @Get(':id')
-  findOne(
-    @Param('id', ParseIntPipe) id: number,
-    @GetUser() user: User,
-  ): Promise<Dictionary> {
+  findOne(@Param('id') id: number, @GetUser() user: User): Promise<Dictionary> {
     return this.dictionariesService.findOne(id, user);
   }
 
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: number,
     @Body() updateDictionaryDto: UpdateDictionaryDto,
     @GetUser() user: User,
   ): Promise<Dictionary> {
@@ -53,10 +49,7 @@ export class DictionariesController {
   }
 
   @Delete(':id')
-  remove(
-    @Param('id', ParseIntPipe) id: number,
-    @GetUser() user: User,
-  ): Promise<Dictionary> {
+  remove(@Param('id') id: number, @GetUser() user: User): Promise<Dictionary> {
     return this.dictionariesService.remove(id, user);
   }
 }

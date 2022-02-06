@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -36,16 +35,13 @@ export class WordsController {
   }
 
   @Get(':id')
-  findOne(
-    @Param('id', ParseIntPipe) id: number,
-    @GetUser() user: User,
-  ): Promise<Word> {
+  findOne(@Param('id') id: number, @GetUser() user: User): Promise<Word> {
     return this.wordsService.findOne(id, user);
   }
 
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: number,
     @Body() updateWordDto: UpdateWordDto,
     @GetUser() user: User,
   ): Promise<Word> {
@@ -53,10 +49,7 @@ export class WordsController {
   }
 
   @Delete(':id')
-  remove(
-    @Param('id', ParseIntPipe) id: number,
-    @GetUser() user: User,
-  ): Promise<Word> {
+  remove(@Param('id') id: number, @GetUser() user: User): Promise<Word> {
     return this.wordsService.remove(id, user);
   }
 }

@@ -18,10 +18,11 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   await app.listen(port);
   Logger.log(`Listening on port ${port}`);
 }
+
 bootstrap();
