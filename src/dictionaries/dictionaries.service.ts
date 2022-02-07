@@ -11,7 +11,7 @@ import { catchUniqueViolation } from '../database/helpers';
 export class DictionariesService {
   constructor(
     @InjectRepository(Dictionary)
-    private readonly dictionaryRepository: Repository<Dictionary>,
+    private readonly dictionariesRepository: Repository<Dictionary>,
   ) {}
 
   async create(
@@ -31,11 +31,11 @@ export class DictionariesService {
   }
 
   findAll(user: User): Promise<Dictionary[]> {
-    return this.dictionaryRepository.find({ where: { userId: user.id } });
+    return this.dictionariesRepository.find({ where: { userId: user.id } });
   }
 
   async findOne(id: number, user: User): Promise<Dictionary> {
-    const dict = await this.dictionaryRepository.findOne({
+    const dict = await this.dictionariesRepository.findOne({
       where: { userId: user.id, id },
     });
 
@@ -54,7 +54,7 @@ export class DictionariesService {
     const updateObj: UpdateDictionaryDto = {
       language: updateDictionaryDto.language,
     };
-    await this.dictionaryRepository
+    await this.dictionariesRepository
       .update(
         {
           id,
@@ -72,7 +72,7 @@ export class DictionariesService {
     await dict.remove();
 
     if (isCurrentDictionary) {
-      const newDict = await this.dictionaryRepository.findOne({
+      const newDict = await this.dictionariesRepository.findOne({
         where: { userId: user.id },
       });
       if (newDict) {
