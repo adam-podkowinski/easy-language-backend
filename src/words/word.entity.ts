@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   Entity,
   ManyToOne,
@@ -11,7 +12,7 @@ import { User } from '../user/user.entity';
 import { Exclude } from 'class-transformer';
 
 @Entity()
-export class Word {
+export class Word extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

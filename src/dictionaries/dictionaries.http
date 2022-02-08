@@ -13,7 +13,7 @@ Authorization: Bearer {{user1_token}}
 }
 
 ###
-GET http://localhost:{{port}}/dictionary/47
+GET http://localhost:{{port}}/dictionary/55
 Accept: application/json
 Authorization: Bearer {{user1_token}}
 

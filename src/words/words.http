@@ -1,0 +1,16 @@
+POST http://localhost:3000/words
+Content-Type: application/json
+Authorization: Bearer {{user1_token}}
+
+{
+  "dictionaryId": 56,
+  "wordForeign": "foreign",
+  "wordTranslation": "translation"
+}
+
+###
+GET http://localhost:3000/words
+Accept: application/json
+Authorization: Bearer {{user1_token}}
+
+###
