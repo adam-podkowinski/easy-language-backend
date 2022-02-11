@@ -51,16 +51,13 @@ export class DictionariesService {
     updateDictionaryDto: UpdateDictionaryDto,
     user: User,
   ): Promise<Dictionary> {
-    const updateObj: UpdateDictionaryDto = {
-      language: updateDictionaryDto.language,
-    };
     await this.dictionariesRepository
       .update(
         {
           id,
           user,
         },
-        updateObj,
+        updateDictionaryDto,
       )
       .catch(catchUniqueViolation);
     return await this.findOne(id, user);

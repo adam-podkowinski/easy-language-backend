@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { User } from '../user/user.entity';
 import { UpdateWordDto } from './dto/update-word.dto';
 import { CreateWordDto } from './dto/create-word.dto';
@@ -45,14 +49,26 @@ export class WordsService {
   }
 
   async findOne(id: number, user: User): Promise<Word> {
-    return this.wordsRepository.findOne({ where: { id, userId: user.id } });
+    const word: Word = await this.wordsRepository.findOne({
+      where: { id, userId: user.id },
+    });
+
+    if (!word) throw new NotFoundException(`Word with id: ${id} not found.`);
+
+    return word;
   }
 
-  async update(id: number, updateWordDto: UpdateWordDto, user: User) {
-    return Promise.resolve(undefined);
+  async update(
+    id: number,
+    updateWordDto: UpdateWordDto,
+    user: User,
+  ): Promise<Word> {
+    await this.wordsRepository.update({ id, user }, updateWordDto);
+    return await this.findOne(id, user);
   }
 
-  async remove(id: number, user: User) {
-    return Promise.resolve(undefined);
+  async remove(id: number, user: User): Promise<Word> {
+    const word = await this.findOne(id, user);
+    return await word.remove();
   }
 }
