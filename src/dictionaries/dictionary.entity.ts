@@ -48,4 +48,8 @@ export class Dictionary extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column({ nullable: true })
+  @Exclude()
+  tempUpdatedAt: Date;
 }

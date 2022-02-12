@@ -1,10 +1,15 @@
+### Remove word
+DELETE http://localhost:{{port}}/words/20
+Content-Type: application/json
+Authorization: Bearer {{user1_token}}
+
 ### Update an existing word
-PATCH http://localhost:{{port}}/words/9
+PATCH http://localhost:{{port}}/words/17
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
 {
-  "wordForeign": "XD",
+  "wordForeign": "XsiemaDdsddss",
   "learningStatus": "reviewing",
   "id": 59,
   "userId": 3
@@ -16,7 +21,7 @@ Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
 {
-  "dictionaryId": 55,
+  "dictionaryId": 57,
   "wordForeign": "foreign",
   "wordTranslation": "translation"
 }

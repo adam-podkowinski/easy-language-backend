@@ -1,10 +1,10 @@
 ###
-DELETE http://localhost:{{port}}/dictionary/55
+DELETE http://localhost:{{port}}/dictionary/56
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
 ###
-PATCH http://localhost:{{port}}/dictionary/52
+PATCH http://localhost:{{port}}/dictionary/56
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
@@ -30,7 +30,7 @@ Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
 {
-  "language": "updateddd"
+  "language": "Dictionary"
 }
 
 ###

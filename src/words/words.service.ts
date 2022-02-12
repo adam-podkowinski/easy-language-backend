@@ -41,6 +41,9 @@ export class WordsService {
 
     const word: Word = await this.wordsRepository.create(createObj);
 
+    dict.tempUpdatedAt = new Date();
+    await dict.save();
+
     return word.save();
   }
 
@@ -64,11 +67,15 @@ export class WordsService {
     user: User,
   ): Promise<Word> {
     await this.wordsRepository.update({ id, user }, updateWordDto);
+    user.currentDictionary.tempUpdatedAt = new Date();
+    await user.currentDictionary.save();
     return await this.findOne(id, user);
   }
 
   async remove(id: number, user: User): Promise<Word> {
     const word = await this.findOne(id, user);
+    user.currentDictionary.tempUpdatedAt = new Date();
+    await user.currentDictionary.save();
     return await word.remove();
   }
 }

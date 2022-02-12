@@ -18,7 +18,9 @@ export class UserService {
   }
 
   async getById(id: number): Promise<User> {
-    const user = await this.userRepository.findOne(id);
+    const user = await this.userRepository.findOne(id, {
+      relations: ['currentDictionary'],
+    });
     if (!user)
       throw new NotFoundException(`User with ID: ${id} does not exist`);
     return user;
