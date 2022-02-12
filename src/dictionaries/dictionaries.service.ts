@@ -80,4 +80,17 @@ export class DictionariesService {
 
     return user.currentDictionary;
   }
+
+  async findOneWithWords(id: number, user: User): Promise<Dictionary> {
+    const dict = await this.dictionariesRepository.findOne({
+      where: { userId: user.id, id },
+      relations: ['words'],
+    });
+
+    if (!dict) {
+      throw new NotFoundException(`Dictionary with ID: ${id} not found`);
+    }
+
+    return dict;
+  }
 }

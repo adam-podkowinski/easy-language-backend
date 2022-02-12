@@ -1,5 +1,5 @@
 ###
-DELETE http://localhost:{{port}}/dictionary/46
+DELETE http://localhost:{{port}}/dictionary/55
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
@@ -12,7 +12,12 @@ Authorization: Bearer {{user1_token}}
   "language": "updatedd"
 }
 
-###
+### Get single dictionary with words
+GET http://localhost:{{port}}/dictionary/55/words
+Accept: application/json
+Authorization: Bearer {{user1_token}}
+
+### Get single dictionary with no words
 GET http://localhost:{{port}}/dictionary/55
 Accept: application/json
 Authorization: Bearer {{user1_token}}

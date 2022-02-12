@@ -34,7 +34,6 @@ export class Word extends BaseEntity {
   @ManyToOne(() => Dictionary, (dict) => dict.words, {
     onDelete: 'CASCADE',
   })
-  @Exclude()
   dictionary: Dictionary;
 
   @Column()
