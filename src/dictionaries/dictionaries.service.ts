@@ -80,10 +80,10 @@ export class DictionariesService {
 
   async remove(id: number, user: User): Promise<Dictionary> {
     const dict = await this.findOne(id, user);
-    const isCurrentDictionary = dict.id === user.currentDictionaryId;
+    const wasCurrentDictionary = dict.id === user.currentDictionaryId;
     await dict.remove();
 
-    if (isCurrentDictionary) {
+    if (wasCurrentDictionary) {
       const newDict = await this.dictionariesRepository.findOne({
         where: { userId: user.id },
       });
@@ -91,9 +91,13 @@ export class DictionariesService {
         user.currentDictionary = newDict;
         await user.save();
       }
+      return newDict;
     }
 
-    return user.currentDictionary;
+    return await this.dictionariesRepository.findOne({
+      id: user.currentDictionaryId,
+      user,
+    });
   }
 
   async findOneWithWords(id: number, user: User): Promise<Dictionary> {

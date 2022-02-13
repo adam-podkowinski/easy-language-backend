@@ -1,3 +1,18 @@
+### Update a current user
+PATCH http://localhost:{{port}}/user
+Content-Type: application/json
+Authorization: Bearer {{user1_token}}
+
+{
+  "currentDictionaryId": 60,
+  "nativeLanguage": "pla",
+  "themeMode": "Light",
+  "salt": "should update salt",
+  "password": "shouldnt update",
+  "email": "shouldnt updateemail"
+}
+
+###
 GET http://localhost:{{port}}/user
 Accept: application/json
 Authorization: Bearer {{user1_token}}

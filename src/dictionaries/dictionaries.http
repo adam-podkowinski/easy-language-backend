@@ -1,5 +1,5 @@
 ###
-DELETE http://localhost:{{port}}/dictionary/56
+DELETE http://localhost:{{port}}/dictionary/63
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
@@ -31,7 +31,7 @@ Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
 {
-  "language": "Dictionary"
+  "language": "otheruserr"
 }
 
 ###
