@@ -9,7 +9,7 @@ import { User } from '../user/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from '../user/dto/create-user.dto';
+import { CreateUserWithPasswordDto } from '../user/dto/create-user-with-password.dto';
 import { PostgresErrorCode } from '../database/error-codes.enum';
 import { AuthenticationReturnDto } from './dto/authentication-return.dto';
 
@@ -20,6 +20,10 @@ export class AuthenticationService {
     private jwtService: JwtService,
   ) {}
 
+  public async signUser(user: User): Promise<string> {
+    return this.jwtService.sign({ id: user.id });
+  }
+
   public async register(
     registerDto: RegisterDto,
   ): Promise<AuthenticationReturnDto> {
@@ -27,16 +31,16 @@ export class AuthenticationService {
     const hashedPassword = await bcrypt.hash(registerDto.password, salt);
 
     try {
-      const createUserData: CreateUserDto = {
+      const createUserData: CreateUserWithPasswordDto = {
         ...registerDto,
         password: hashedPassword,
         salt,
       };
 
-      const user = await this.userService.create(createUserData);
-      const token = await this.jwtService.sign({ id: user.id });
+      const user = await this.userService.createWithPassword(createUserData);
+      const accessToken = await this.signUser(user);
 
-      return { token, user };
+      return { accessToken, user };
     } catch (e) {
       if (e?.code === PostgresErrorCode.UniqueViolation) {
         throw new ConflictException('User with that e-mail already exists.');
@@ -55,8 +59,8 @@ export class AuthenticationService {
       throw new UnauthorizedException('Invalid credentials.');
     }
 
-    const token = await this.jwtService.sign({ id: user.id });
+    const accessToken = await this.signUser(user);
 
-    return { token, user };
+    return { accessToken, user };
   }
 }

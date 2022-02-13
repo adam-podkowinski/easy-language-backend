@@ -31,6 +31,4 @@ export class RegisterDto {
 
   @IsOptional()
   nativeLanguage?: string;
-  @IsOptional()
-  currentDictionaryId?: number;
 }

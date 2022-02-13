@@ -1,6 +1,6 @@
 import { User } from '../../user/user.entity';
 
 export interface AuthenticationReturnDto {
-  token: string;
+  accessToken: string;
   user: User;
 }

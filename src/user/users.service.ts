@@ -2,9 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserWithPasswordDto } from './dto/create-user-with-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Dictionary } from '../dictionaries/dictionary.entity';
+import { CreateUserWithGoogleDto } from './dto/create-user-with-google.dto';
 
 @Injectable()
 export class UsersService {
@@ -30,9 +31,16 @@ export class UsersService {
     return user;
   }
 
-  async create(userData: CreateUserDto): Promise<User> {
+  async createWithPassword(userData: CreateUserWithPasswordDto): Promise<User> {
     const newUser = await this.usersRepository.create(userData);
     await this.usersRepository.save(newUser);
+    return newUser;
+  }
+
+  async createWithGoogle(userData: CreateUserWithGoogleDto): Promise<User> {
+    const createData = { ...userData, isRegisteredWithGoogle: true };
+    const newUser = await this.usersRepository.create(createData);
+    await newUser.save();
     return newUser;
   }
 

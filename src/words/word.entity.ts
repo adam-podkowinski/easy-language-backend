@@ -37,7 +37,6 @@ export class Word extends BaseEntity {
   dictionary: Dictionary;
 
   @Column()
-  @Exclude()
   dictionaryId: number;
 
   @ManyToOne(() => User, (user) => user.words, {

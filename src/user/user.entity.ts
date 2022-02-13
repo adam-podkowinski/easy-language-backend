@@ -22,13 +22,16 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Exclude()
-  private password: string;
+  private password?: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Exclude()
-  private salt: string;
+  private salt?: string;
+
+  @Column({ default: false })
+  public isRegisteredWithGoogle: boolean = false;
 
   @Column({ default: ThemeMode.System })
   themeMode: ThemeMode = ThemeMode.System;

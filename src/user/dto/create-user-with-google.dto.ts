@@ -1,10 +1,7 @@
 import { ThemeMode } from '../enums/theme-mode.enum';
 
-export interface CreateUserDto {
+export interface CreateUserWithGoogleDto {
   email: string;
-  password: string;
-  salt: string;
   themeMode?: ThemeMode;
   nativeLanguage?: string;
-  currentDictionaryId?: number;
 }
