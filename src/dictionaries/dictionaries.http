@@ -4,12 +4,13 @@ Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
 ###
-PATCH http://localhost:{{port}}/dictionary/56
+PATCH http://localhost:{{port}}/dictionary/57
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
 {
-  "language": "updatedd"
+  "language": "updatedd",
+  "flashcardId": 19
 }
 
 ### Get single dictionary with words
@@ -18,7 +19,7 @@ Accept: application/json
 Authorization: Bearer {{user1_token}}
 
 ### Get single dictionary with no words
-GET http://localhost:{{port}}/dictionary/55
+GET http://localhost:{{port}}/dictionary/57
 Accept: application/json
 Authorization: Bearer {{user1_token}}
 

@@ -6,12 +6,15 @@ import { User } from '../user/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { catchUniqueViolation } from '../database/helpers';
+import { Word } from '../words/word.entity';
 
 @Injectable()
 export class DictionariesService {
   constructor(
     @InjectRepository(Dictionary)
     private readonly dictionariesRepository: Repository<Dictionary>,
+    @InjectRepository(Word)
+    private readonly wordsRepository: Repository<Word>,
   ) {}
 
   async create(
@@ -51,6 +54,18 @@ export class DictionariesService {
     updateDictionaryDto: UpdateDictionaryDto,
     user: User,
   ): Promise<Dictionary> {
+    if (updateDictionaryDto.flashcardId != null) {
+      const flashcard: Word = await this.wordsRepository.findOne({
+        where: { id: updateDictionaryDto.flashcardId, userId: user.id },
+      });
+
+      if (!flashcard) {
+        throw new NotFoundException(
+          `Not found a flashcard with an id of ${updateDictionaryDto.flashcardId}`,
+        );
+      }
+    }
+
     await this.dictionariesRepository
       .update(
         {

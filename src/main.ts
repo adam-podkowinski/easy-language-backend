@@ -22,7 +22,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   await app.listen(port);
-  Logger.log(`Listening on port ${port}`);
+  Logger.log(`Listening on port ${port}`, 'bootstrap()');
 }
 
 bootstrap();
