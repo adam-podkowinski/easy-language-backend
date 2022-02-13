@@ -21,8 +21,8 @@ Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
 {
-  "dictionaryId": 57,
-  "wordForeign": "foreign",
+  "dictionaryId": 60,
+  "wordForeign": "4",
   "wordTranslation": "translation"
 }
 

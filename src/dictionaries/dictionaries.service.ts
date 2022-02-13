@@ -100,12 +100,16 @@ export class DictionariesService {
     });
   }
 
-  // TODO: Sort words in this dictionary by createdAt
   async findOneWithWords(id: number, user: User): Promise<Dictionary> {
-    const dict = await this.dictionariesRepository.findOne({
-      where: { userId: user.id, id },
-      relations: ['words'],
-    });
+    const dict: Dictionary = await this.dictionariesRepository
+      .createQueryBuilder('dictionary')
+      .leftJoinAndSelect('dictionary.words', 'words')
+      .where('dictionary.userId = :userId AND dictionary.id = :id', {
+        userId: user.id,
+        id,
+      })
+      .orderBy('words.createdAt', 'DESC')
+      .getOne();
 
     if (!dict) {
       throw new NotFoundException(`Dictionary with ID: ${id} not found`);
