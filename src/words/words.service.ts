@@ -16,14 +16,14 @@ export class WordsService {
   constructor(
     @InjectRepository(Word) private readonly wordsRepository: Repository<Word>,
     @InjectRepository(Dictionary)
-    private readonly dictionaryRepository: Repository<Dictionary>,
+    private readonly dictionariesRepository: Repository<Dictionary>,
   ) {}
 
   async create(createWordDto: CreateWordDto, user: User): Promise<Word> {
     const { wordForeign, wordTranslation, dictionaryId, favorite } =
       createWordDto;
 
-    const dict = await this.dictionaryRepository.findOne(dictionaryId);
+    const dict = await this.dictionariesRepository.findOne(dictionaryId);
 
     if (!dict || dict.userId !== user.id) {
       throw new UnauthorizedException(

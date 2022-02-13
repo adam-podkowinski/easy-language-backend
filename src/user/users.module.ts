@@ -11,4 +11,4 @@ import { Dictionary } from '../dictionaries/dictionary.entity';
   exports: [UsersService],
   controllers: [UserController],
 })
-export class UserModule {}
+export class UsersModule {}

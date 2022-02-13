@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
-import { UserModule } from './user/user.module';
+import { UsersModule } from './user/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DictionariesModule } from './dictionaries/dictionaries.module';
 import { WordsModule } from './words/words.module';
@@ -20,11 +20,13 @@ import * as Joi from '@hapi/joi';
         TYPEORM_SYNC: Joi.bool().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
+        GOOGLE_AUTH_CLIENT_ID: Joi.string().required(),
+        GOOGLE_AUTH_CLIENT_SECRET: Joi.string().required(),
         PORT: Joi.number(),
       }),
     }),
     DatabaseModule,
-    UserModule,
+    UsersModule,
     AuthenticationModule,
     DictionariesModule,
     WordsModule,
