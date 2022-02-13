@@ -21,6 +21,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
+  app.enableCors({ allowedHeaders: '*', origin: '*' });
+
   await app.listen(port);
   Logger.log(`Listening on port ${port}`, 'bootstrap()');
 }

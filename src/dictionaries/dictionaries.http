@@ -1,10 +1,10 @@
 ###
-DELETE http://localhost:{{port}}/dictionary/63
+DELETE http://localhost:{{port}}/dictionaries/63
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
 ###
-PATCH http://localhost:{{port}}/dictionary/57
+PATCH http://localhost:{{port}}/dictionaries/57
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
@@ -14,19 +14,19 @@ Authorization: Bearer {{user1_token}}
 }
 
 ### Get single dictionary with words
-GET http://localhost:{{port}}/dictionary/55/words
+GET http://localhost:{{port}}/dictionaries/60/words
 Accept: application/json
 Authorization: Bearer {{user1_token}}
 
 ### Get single dictionary with no words
-GET http://localhost:{{port}}/dictionary/57
+GET http://localhost:{{port}}/dictionaries/60
 Accept: application/json
 Authorization: Bearer {{user1_token}}
 
 ###
 
 ###
-POST http://localhost:{{port}}/dictionary
+POST http://localhost:{{port}}/dictionaries
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
 
@@ -35,7 +35,7 @@ Authorization: Bearer {{user1_token}}
 }
 
 ###
-GET http://localhost:{{port}}/dictionary
+GET http://localhost:{{port}}/dictionaries
 Accept: application/json
 Authorization: Bearer {{user1_token}}
 

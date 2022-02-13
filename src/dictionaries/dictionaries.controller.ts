@@ -15,9 +15,8 @@ import { User } from '../user/user.entity';
 import { GetUser } from '../user/get-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { Dictionary } from './dictionary.entity';
-import { Word } from '../words/word.entity';
 
-@Controller('dictionary')
+@Controller('dictionaries')
 @UseGuards(AuthGuard('jwt'))
 export class DictionariesController {
   constructor(private readonly dictionariesService: DictionariesService) {}

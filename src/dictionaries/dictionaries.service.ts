@@ -100,6 +100,7 @@ export class DictionariesService {
     });
   }
 
+  // TODO: Sort words in this dictionary by createdAt
   async findOneWithWords(id: number, user: User): Promise<Dictionary> {
     const dict = await this.dictionariesRepository.findOne({
       where: { userId: user.id, id },

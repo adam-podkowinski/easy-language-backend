@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -51,4 +52,7 @@ export class Word extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
