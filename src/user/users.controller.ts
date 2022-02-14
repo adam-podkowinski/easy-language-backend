@@ -7,7 +7,7 @@ import { UsersService } from './users.service';
 
 @Controller('user')
 @UseGuards(AuthGuard('jwt'))
-export class UserController {
+export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
