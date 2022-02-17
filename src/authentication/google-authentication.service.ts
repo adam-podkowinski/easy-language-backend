@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthenticationReturnDto } from './dto/authentication-return.dto';
 import { UsersService } from '../user/users.service';
 import { ConfigService } from '@nestjs/config';
@@ -30,6 +30,13 @@ export class GoogleAuthenticationService {
     try {
       // Login
       const user = await this.usersService.getByEmail(email);
+
+      if (!user.isRegisteredWithGoogle)
+        return Promise.reject(
+          new UnauthorizedException(
+            'Account registered with e-mail and password.',
+          ),
+        );
 
       const accessToken = await this.authenticationService.signUser(user);
 

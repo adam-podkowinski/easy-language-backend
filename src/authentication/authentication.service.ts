@@ -55,7 +55,14 @@ export class AuthenticationService {
     const user: User = await this.userService.getByEmail(
       authCredentialsDto.email,
     );
-    if (!user || !(await user.validatePassword(authCredentialsDto.password))) {
+
+    if (!user || user.isRegisteredWithGoogle) {
+      throw new UnauthorizedException(
+        'Account linked with Google account. Log in using Google OAuth',
+      );
+    }
+
+    if (!(await user.validatePassword(authCredentialsDto.password))) {
       throw new UnauthorizedException('Invalid credentials.');
     }
 

@@ -24,8 +24,6 @@ Accept: application/json
 Authorization: Bearer {{user1_token}}
 
 ###
-
-###
 POST http://localhost:{{port}}/dictionaries
 Content-Type: application/json
 Authorization: Bearer {{user1_token}}
