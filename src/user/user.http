@@ -1,3 +1,13 @@
+DELETE http://localhost:{{port}}/user
+Content-Type: application/json
+Authorization: Bearer {{user1_token}}
+
+{
+  "email": "adampodkdev@gmail.com",
+  "password": "null"
+}
+
+###
 ### Update a current user
 PATCH http://localhost:{{port}}/user
 Content-Type: application/json

@@ -1,9 +1,17 @@
-import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.entity';
 import { GetUser } from './get-user.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
+import { LoginDto } from '../authentication/dto/login.dto';
 
 @Controller('user')
 @UseGuards(AuthGuard('jwt'))
@@ -21,5 +29,14 @@ export class UsersController {
     @GetUser() user: User,
   ): Promise<User> {
     return this.usersService.updateCurrentUser(updateUserDto, user);
+  }
+
+  // TODO: Handle account removal that is linked with google
+  @Delete()
+  deleteUser(
+    @Body() loginDto: LoginDto,
+    @GetUser() user: User,
+  ): Promise<boolean> {
+    return this.usersService.deleteUser(loginDto, user);
   }
 }

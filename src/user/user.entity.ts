@@ -28,7 +28,7 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   @Exclude()
-  private salt?: string;
+  public salt?: string;
 
   @Column({ default: false })
   public isRegisteredWithGoogle: boolean = false;

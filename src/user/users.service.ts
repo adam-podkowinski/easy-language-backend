@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -6,6 +10,7 @@ import { CreateUserWithPasswordDto } from './dto/create-user-with-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Dictionary } from '../dictionaries/dictionary.entity';
 import { CreateUserWithGoogleDto } from './dto/create-user-with-google.dto';
+import { LoginDto } from '../authentication/dto/login.dto';
 
 @Injectable()
 export class UsersService {
@@ -63,5 +68,30 @@ export class UsersService {
     await this.usersRepository.update({ id: user.id }, updateUserDto);
 
     return this.getById(user.id);
+  }
+
+  async deleteUser(loginDto: LoginDto, user: User): Promise<boolean> {
+    const userWithSalt = await this.usersRepository
+      .createQueryBuilder()
+      .where('id = :id', { id: user.id })
+      .getOne();
+
+    if (userWithSalt.isRegisteredWithGoogle)
+      throw new UnauthorizedException(
+        'Could not remove an account that is linked with google.',
+      );
+
+    const credentialsCorrect = await userWithSalt.validatePassword(
+      loginDto.password,
+    );
+
+    if (!credentialsCorrect)
+      throw new UnauthorizedException(
+        'Could not remove an account - credentials incorrect.',
+      );
+
+    const removed = await user.remove();
+
+    return !removed.hasId();
   }
 }
