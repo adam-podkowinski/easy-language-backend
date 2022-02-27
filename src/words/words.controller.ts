@@ -9,15 +9,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { WordsService } from './words.service';
-import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../user/get-user.decorator';
 import { User } from '../user/user.entity';
 import { Word } from './word.entity';
 import { CreateWordDto } from './dto/create-word.dto';
 import { UpdateWordDto } from './dto/update-word.dto';
+import { JwtAccessGuard } from '../authentication/jwt-guards';
 
 @Controller('words')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtAccessGuard)
 export class WordsController {
   constructor(private readonly wordsService: WordsService) {}
 

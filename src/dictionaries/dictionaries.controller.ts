@@ -13,11 +13,11 @@ import { CreateDictionaryDto } from './dto/create-dictionary.dto';
 import { UpdateDictionaryDto } from './dto/update-dictionary.dto';
 import { User } from '../user/user.entity';
 import { GetUser } from '../user/get-user.decorator';
-import { AuthGuard } from '@nestjs/passport';
 import { Dictionary } from './dictionary.entity';
+import { JwtAccessGuard } from '../authentication/jwt-guards';
 
 @Controller('dictionaries')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtAccessGuard)
 export class DictionariesController {
   constructor(private readonly dictionariesService: DictionariesService) {}
 

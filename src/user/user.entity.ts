@@ -24,6 +24,10 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   @Exclude()
+  public currentHashedRefreshToken?: string;
+
+  @Column({ nullable: true })
+  @Exclude()
   private password?: string;
 
   @Column({ nullable: true })

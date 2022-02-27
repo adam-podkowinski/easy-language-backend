@@ -12,16 +12,28 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserWithPasswordDto } from '../user/dto/create-user-with-password.dto';
 import { PostgresErrorCode } from '../database/error-codes.enum';
 import { AuthenticationReturnDto } from './dto/authentication-return.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
     private readonly userService: UsersService,
     private jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
-  public async signUser(user: User): Promise<string> {
+  public async signUserAccess(user: User): Promise<string> {
     return this.jwtService.sign({ id: user.id });
+  }
+
+  public async signUserRefresh(user: User): Promise<string> {
+    return this.jwtService.sign(
+      { id: user.id },
+      {
+        secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
+        expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),
+      },
+    );
   }
 
   public async register(
@@ -38,9 +50,12 @@ export class AuthenticationService {
       };
 
       const user = await this.userService.createWithPassword(createUserData);
-      const accessToken = await this.signUser(user);
+      const accessToken = await this.signUserAccess(user);
+      const refreshToken = await this.signUserRefresh(user);
 
-      return { accessToken, user };
+      await this.userService.setCurrentRefreshToken(refreshToken, user.id);
+
+      return { accessToken, refreshToken, user };
     } catch (e) {
       if (e?.code === PostgresErrorCode.UniqueViolation) {
         throw new ConflictException('User with that e-mail already exists.');
@@ -66,8 +81,11 @@ export class AuthenticationService {
       throw new UnauthorizedException('Invalid credentials.');
     }
 
-    const accessToken = await this.signUser(user);
+    const accessToken = await this.signUserAccess(user);
+    const refreshToken = await this.signUserRefresh(user);
 
-    return { accessToken, user };
+    await this.userService.setCurrentRefreshToken(refreshToken, user.id);
+
+    return { accessToken, refreshToken, user };
   }
 }

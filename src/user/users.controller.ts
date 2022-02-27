@@ -6,15 +6,15 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.entity';
 import { GetUser } from './get-user.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { LoginDto } from '../authentication/dto/login.dto';
+import { JwtAccessGuard } from '../authentication/jwt-guards';
 
 @Controller('user')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtAccessGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

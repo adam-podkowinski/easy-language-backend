@@ -33,14 +33,17 @@ export class GoogleAuthenticationService {
 
       if (!user.isRegisteredWithGoogle)
         return Promise.reject(
-          new UnauthorizedException(
-            'Account registered with e-mail and password.',
-          ),
+          new UnauthorizedException('Account registered with password.'),
         );
 
-      const accessToken = await this.authenticationService.signUser(user);
+      const accessToken = await this.authenticationService.signUserAccess(user);
+      const refreshToken = await this.authenticationService.signUserRefresh(
+        user,
+      );
 
-      return { user, accessToken };
+      await this.usersService.setCurrentRefreshToken(refreshToken, user.id);
+
+      return { user, refreshToken, accessToken };
     } catch (e) {
       // Register
       if (e.status !== 404) {
@@ -52,9 +55,16 @@ export class GoogleAuthenticationService {
         email: email,
       });
 
-      const accessToken = await this.authenticationService.signUser(newUser);
+      const accessToken = await this.authenticationService.signUserAccess(
+        newUser,
+      );
+      const refreshToken = await this.authenticationService.signUserRefresh(
+        newUser,
+      );
 
-      return { user: newUser, accessToken };
+      await this.usersService.setCurrentRefreshToken(refreshToken, newUser.id);
+
+      return { user: newUser, refreshToken, accessToken };
     }
   }
 }

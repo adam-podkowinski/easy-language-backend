@@ -11,6 +11,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Dictionary } from '../dictionaries/dictionary.entity';
 import { CreateUserWithGoogleDto } from './dto/create-user-with-google.dto';
 import { LoginDto } from '../authentication/dto/login.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -42,11 +43,41 @@ export class UsersService {
     return newUser;
   }
 
+  async getUserIfRefreshTokenMatches(
+    refreshToken: string,
+    userId: number,
+  ): Promise<User> {
+    const user = await this.getById(userId);
+
+    const isRefreshTokenMatching = await bcrypt.compare(
+      refreshToken,
+      user.currentHashedRefreshToken,
+    );
+
+    if (isRefreshTokenMatching) {
+      return user;
+    }
+
+    throw new UnauthorizedException('Refresh tokens do not match.');
+  }
+
   async createWithGoogle(userData: CreateUserWithGoogleDto): Promise<User> {
     const createData = { ...userData, isRegisteredWithGoogle: true };
     const newUser = await this.usersRepository.create(createData);
     await newUser.save();
     return newUser;
+  }
+
+  async setCurrentRefreshToken(
+    refreshToken: string,
+    userId: number,
+  ): Promise<User> {
+    const user = await this.usersRepository.findOne(userId);
+    if (!user)
+      throw new NotFoundException(`User with id: ${userId} not found.`);
+
+    user.currentHashedRefreshToken = await bcrypt.hash(refreshToken, user.salt);
+    return await user.save();
   }
 
   async updateCurrentUser(
