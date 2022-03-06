@@ -1,6 +1,6 @@
 GET http://localhost:3000/authentication/refresh
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTY0NTk3ODk5MSwiZXhwIjoxNjQ2MDY1MzkxfQ.Yr9cAyQAHuYFfr-3LaqpWrAJE8mOAcZtlR4HO2Lmu_g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTY0NjU5MDEzOCwiZXhwIjoxNjU0MzY2MTM4fQ.WlBOcrpTYPOBaDTjp3UXZm5jZBO6W8JOY1YIqIkRZis
 
 ###
 
@@ -8,7 +8,7 @@ POST http://localhost:3000/authentication/register
 Content-Type: application/json
 
 {
-  "email": "{{user2}}a",
+  "email": "{{user2}}",
   "password": "{{password}}",
   "themeMode": "Dark"
 }

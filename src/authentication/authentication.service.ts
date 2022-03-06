@@ -13,6 +13,7 @@ import { CreateUserWithPasswordDto } from '../user/dto/create-user-with-password
 import { PostgresErrorCode } from '../database/error-codes.enum';
 import { AuthenticationReturnDto } from './dto/authentication-return.dto';
 import { ConfigService } from '@nestjs/config';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthenticationService {

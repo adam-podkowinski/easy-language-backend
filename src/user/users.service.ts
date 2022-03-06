@@ -49,6 +49,11 @@ export class UsersService {
   ): Promise<User> {
     const user = await this.getById(userId);
 
+    if (!user.currentHashedRefreshToken)
+      throw new UnauthorizedException(
+        'No refresh token exists, please log in.',
+      );
+
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.currentHashedRefreshToken,
@@ -124,5 +129,13 @@ export class UsersService {
     const removed = await user.remove();
 
     return !removed.hasId();
+  }
+
+  async logout(user: User): Promise<{ [key: string]: any }> {
+    await this.usersRepository.update(user.id, {
+      currentHashedRefreshToken: null,
+    });
+
+    return { accessToken: '', user: null, message: 'Logged out successfully.' };
   }
 }

@@ -31,6 +31,11 @@ export class UsersController {
     return this.usersService.updateCurrentUser(updateUserDto, user);
   }
 
+  @Get('logout')
+  async logout(@GetUser() user: User): Promise<{ [key: string]: any }> {
+    return this.usersService.logout(user);
+  }
+
   // TODO: Handle account removal that is linked with google
   @Delete()
   deleteUser(

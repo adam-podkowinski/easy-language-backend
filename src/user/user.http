@@ -28,3 +28,7 @@ Accept: application/json
 Authorization: Bearer {{user1_token}}
 
 ###
+GET http://localhost:3000/user/logout
+Content-Type: application/json
+Authorization: Bearer {{user1_token}}
+###
