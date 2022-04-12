@@ -5,7 +5,7 @@ import { LoginDto } from './dto/login.dto';
 import { AuthenticationReturnDto } from './dto/authentication-return.dto';
 import { TokenVerificationDto } from './dto/token-verification.dto';
 import { GoogleAuthenticationService } from './google-authentication.service';
-import { JwtAccessGuard, JwtRefreshGuard } from './jwt-guards';
+import { JwtRefreshGuard } from './jwt-guards';
 import { User } from '../user/user.entity';
 import { GetUser } from '../user/get-user.decorator';
 

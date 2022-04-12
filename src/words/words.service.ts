@@ -17,7 +17,7 @@ export class WordsService {
     @InjectRepository(Word) private readonly wordsRepository: Repository<Word>,
     @InjectRepository(Dictionary)
     private readonly dictionariesRepository: Repository<Dictionary>,
-  ) {}
+  ) { }
 
   async create(createWordDto: CreateWordDto, user: User): Promise<Word> {
     const { wordForeign, wordTranslation, dictionaryId, favorite } =
@@ -39,7 +39,7 @@ export class WordsService {
       user,
     };
 
-    const word: Word = await this.wordsRepository.create(createObj);
+    const word: Word = this.wordsRepository.create(createObj);
 
     dict.tempUpdatedAt = new Date();
     await dict.save();

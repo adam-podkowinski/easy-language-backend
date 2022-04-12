@@ -38,7 +38,7 @@ export class UsersService {
   }
 
   async createWithPassword(userData: CreateUserWithPasswordDto): Promise<User> {
-    const newUser = await this.usersRepository.create(userData);
+    const newUser = this.usersRepository.create(userData);
     await this.usersRepository.save(newUser);
     return newUser;
   }
@@ -68,7 +68,7 @@ export class UsersService {
 
   async createWithGoogle(userData: CreateUserWithGoogleDto): Promise<User> {
     const createData = { ...userData, isRegisteredWithGoogle: true };
-    const newUser = await this.usersRepository.create(createData);
+    const newUser = this.usersRepository.create(createData);
     await newUser.save();
     return newUser;
   }
