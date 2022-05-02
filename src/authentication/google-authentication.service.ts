@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { AuthenticationService } from './authentication.service';
 import { Auth, google } from 'googleapis';
 import { TokenVerificationDto } from './dto/token-verification.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class GoogleAuthenticationService {
@@ -53,6 +54,7 @@ export class GoogleAuthenticationService {
       const newUser = await this.usersService.createWithGoogle({
         ...tokenData,
         email: email,
+        salt: await bcrypt.genSalt(),
       });
 
       const accessToken = await this.authenticationService.signUserAccess(
