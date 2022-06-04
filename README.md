@@ -1,5 +1,5 @@
 # Easy Language app backend
-Written in node.js
+Written in node.js and NestJS framework.
 
 ## What is it?
 Backend for a cross-platform app for learning new languages.
