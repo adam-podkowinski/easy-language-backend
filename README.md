@@ -14,6 +14,9 @@ Frontend [flutter](https://flutter.dev) app: [easy_language](https://github.com/
 ### Trello
 Trello board: [https://trello.com/b/V8EUc7b3/easy-language](Trello)
 
+### How to run?
+`yarn start:dev`
+
 ## Endpoints
 Endpoints are distributed across 4 controllers:<br>`authentication.controller.ts`, `users.controller.ts`, `words.controller.ts`, `dictionaries.controller.ts`
 - `/authentication/`
