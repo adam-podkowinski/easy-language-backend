@@ -49,6 +49,8 @@ export class Dictionary extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  // Update this field and save
+  // on save() the updatedAt field updates automatically because tempUpdatedAt changed
   @Column({ nullable: true })
   @Exclude()
   tempUpdatedAt: Date;

@@ -4,14 +4,15 @@ import {
   Delete,
   Get,
   Patch,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { User } from './user.entity';
 import { GetUser } from './get-user.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
-import { LoginDto } from '../authentication/dto/login.dto';
 import { JwtAccessGuard } from '../authentication/jwt-guards';
+import { DeleteUserDto } from './dto/delete-user.dto';
 
 @Controller('user')
 @UseGuards(JwtAccessGuard)
@@ -39,9 +40,20 @@ export class UsersController {
   // TODO: Handle account removal that is linked with google
   @Delete()
   deleteUser(
-    @Body() loginDto: LoginDto,
+    @Body() removeDto: DeleteUserDto,
     @GetUser() user: User,
   ): Promise<boolean> {
-    return this.usersService.deleteUser(loginDto, user);
+    if (user.isRegisteredWithGoogle) {
+      if (!removeDto.googleToken)
+        throw new UnauthorizedException('No google token provided.');
+      return this.usersService.deleteUserWithGoogle(
+        { token: removeDto.googleToken },
+        user,
+      );
+    }
+    if (!removeDto.email || !removeDto.password)
+      throw new UnauthorizedException('No credentials provided.');
+
+    return this.usersService.deleteUser(removeDto, user);
   }
 }

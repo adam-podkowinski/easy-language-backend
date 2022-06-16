@@ -12,14 +12,24 @@ import { Dictionary } from '../dictionaries/dictionary.entity';
 import { CreateUserWithGoogleDto } from './dto/create-user-with-google.dto';
 import { LoginDto } from '../authentication/dto/login.dto';
 import * as bcrypt from 'bcrypt';
+import { TokenVerificationDto } from 'src/authentication/dto/token-verification.dto';
+import { Auth, google } from 'googleapis';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
+  oauthClient: Auth.OAuth2Client;
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
     @InjectRepository(Dictionary)
     private dictionariesRepository: Repository<Dictionary>,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    const clientID = this.configService.get('GOOGLE_AUTH_CLIENT_ID');
+    const clientSecret = this.configService.get('GOOGLE_AUTH_CLIENT_SECRET');
+
+    this.oauthClient = new google.auth.OAuth2(clientID, clientSecret);
+  }
 
   async getByEmail(email: string): Promise<User> {
     const user = await this.usersRepository.findOne({ email });
@@ -106,7 +116,31 @@ export class UsersService {
     return this.getById(user.id);
   }
 
+  async deleteUserWithGoogle(
+    tokenData: TokenVerificationDto,
+    user: User,
+  ): Promise<boolean> {
+    if (!user.isRegisteredWithGoogle)
+      throw new UnauthorizedException(
+        'Could not remove an account that is not linked with google.',
+      );
+
+    const { token } = tokenData;
+    const tokenInfo = await this.oauthClient.getTokenInfo(token);
+    const email = tokenInfo.email;
+    const googleUser = await this.getByEmail(email);
+
+    if (googleUser.id !== user.id)
+      throw new UnauthorizedException('Unauthorized');
+
+    const removed = await user.remove();
+
+    return !removed.hasId();
+  }
+
   async deleteUser(loginDto: LoginDto, user: User): Promise<boolean> {
+    if (user.email !== loginDto.email)
+      throw new UnauthorizedException('Invalid credentials');
     const userWithSalt = await this.usersRepository
       .createQueryBuilder()
       .where('id = :id', { id: user.id })
