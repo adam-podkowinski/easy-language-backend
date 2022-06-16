@@ -19,7 +19,6 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
         autoLoadEntities: true,
         namingStrategy: new SnakeNamingStrategy(),
         ssl: { rejectUnauthorized: false },
-        options: { encrypt: true },
       }),
     }),
   ],
