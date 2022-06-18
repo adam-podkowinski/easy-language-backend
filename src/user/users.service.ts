@@ -32,14 +32,17 @@ export class UsersService {
   }
 
   async getByEmail(email: string): Promise<User> {
-    const user = await this.usersRepository.findOne({ email });
+    const user = await this.usersRepository.findOneBy({ email });
     if (!user)
       throw new NotFoundException(`User with email ${email} does not exist`);
     return user;
   }
 
   async getById(id: number): Promise<User> {
-    const user = await this.usersRepository.findOne(id, {
+    const user = await this.usersRepository.findOne({
+      where: {
+        id,
+      },
       relations: ['currentDictionary'],
     });
     if (!user)
@@ -87,7 +90,7 @@ export class UsersService {
     refreshToken: string,
     userId: number,
   ): Promise<User> {
-    const user = await this.usersRepository.findOne(userId);
+    const user = await this.usersRepository.findOneBy({ id: userId });
     if (!user)
       throw new NotFoundException(`User with id: ${userId} not found.`);
 
@@ -101,7 +104,7 @@ export class UsersService {
   ): Promise<User> {
     if (updateUserDto.currentDictionaryId != null) {
       const dict: Dictionary = await this.dictionariesRepository.findOne({
-        where: { id: updateUserDto.currentDictionaryId, user: user },
+        where: { id: updateUserDto.currentDictionaryId, userId: user.id },
       });
 
       if (!dict) {

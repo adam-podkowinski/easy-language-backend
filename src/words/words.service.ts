@@ -23,7 +23,9 @@ export class WordsService {
     const { wordForeign, wordTranslation, dictionaryId, favorite } =
       createWordDto;
 
-    const dict = await this.dictionariesRepository.findOne(dictionaryId);
+    const dict = await this.dictionariesRepository.findOneBy({
+      id: dictionaryId,
+    });
 
     if (!dict || dict.userId !== user.id) {
       throw new UnauthorizedException(
@@ -66,7 +68,7 @@ export class WordsService {
     updateWordDto: UpdateWordDto,
     user: User,
   ): Promise<Word> {
-    await this.wordsRepository.update({ id, user }, updateWordDto);
+    await this.wordsRepository.update({ id, userId: user.id }, updateWordDto);
     user.currentDictionary.tempUpdatedAt = new Date();
     await user.currentDictionary.save();
     return await this.findOne(id, user);

@@ -70,7 +70,7 @@ export class DictionariesService {
       .update(
         {
           id,
-          user,
+          userId: user.id,
         },
         updateDictionaryDto,
       )
@@ -94,9 +94,9 @@ export class DictionariesService {
       return newDict;
     }
 
-    return await this.dictionariesRepository.findOne({
+    return await this.dictionariesRepository.findOneBy({
       id: user.currentDictionaryId,
-      user,
+      userId: user.id,
     });
   }
 
