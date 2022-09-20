@@ -16,7 +16,7 @@ Frontend [flutter](https://flutter.dev) app: [easy_language](https://github.com/
 
 ### Trello
 
-Trello board: [https://trello.com/b/V8EUc7b3/easy-language](Trello)
+Trello board: [trello.com/b/V8EUc7b3/easy-language](https://trello.com/b/V8EUc7b3/easy-language)
 
 ### How to run?
 
